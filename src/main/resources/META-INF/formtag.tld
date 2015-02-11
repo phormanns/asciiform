@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1">
+	<tlibversion>1.0</tlibversion>
+	<jspversion>2.1</jspversion>
+	<shortname>formtag</shortname>
+	<info>Form Tag Library</info>
+	<uri>http://www.jalin.de/taglib/formtag</uri>
+	<tag>
+		<name>formtag</name>
+		<tagclass>de.jalin.taglib.FormTagHandler</tagclass>
+		<bodycontent>tagdependent</bodycontent>
+		<info>render form</info>
+	</tag>
+</taglib> 
