@@ -1,0 +1,13 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<taglib>
+<tlibversion>1.0</tlibversion>
+<jspversion>1.1</jspversion>
+<shortname>formtag</shortname>
+<info>Form Tag Library</info>
+<uri>http://viralpatel.net/blogs/jsp/taglib/substr</uri>
+<tag>
+    <name>formtag</name>
+    <tagclass>de.jalin.taglib.FormTagHandler</tagclass>
+    <info>render form</info>
+</tag>
+</taglib> 
