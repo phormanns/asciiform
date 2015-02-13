@@ -54,9 +54,9 @@ public class Html5BootstrapRenderer implements Renderer {
 				writer.write("<p style=\"font-weight:bold;\">Ihre Daten wurden erfolgreich gesendet.</p>");
 			} 
 			if (RenderMode.INPUT.equals(mode)) {
-				writer.write("<div class=\"form-group\">"
-						+ "<input type=\"submit\" value=\"Absenden\" class=\"btn btn-primary\"/>"
-						+ "<input type=\"reset\" value=\"Abbrechen\" class=\"btn\"/>"
+				writer.write("<div class=\"row form-group\">"
+						+ "<div class=\"col-xs-3\"><input type=\"submit\" value=\"Absenden\" class=\"btn btn-primary\"/></div>"
+						+ "<div class=\"col-xs-3\"><input type=\"reset\" value=\"Abbrechen\" class=\"btn\"/></div>"
 						+ "</div>\n");
 			}
 			if (RenderMode.INPUT.equals(mode)) {
@@ -68,7 +68,7 @@ public class Html5BootstrapRenderer implements Renderer {
 	}
 
 	private void render(final Form form, final List<Widget> row, final Writer writer, final RenderMode mode) throws IOException {
-		writer.write("<div class=\"row form-group has-feedback\">\n");
+		writer.write("<div class=\"row has-feedback\">\n");
 		int colsCount = 0;
 		for (int idx = 1; idx < row.size(); idx++) {
 			final Widget widget = row.get(idx-1);
@@ -83,12 +83,13 @@ public class Html5BootstrapRenderer implements Renderer {
 
 	private void render(final Form form, final Widget w, final int colspan, final Writer writer, final RenderMode mode) throws IOException {
 		if (w instanceof Label) {
-			writer.write("<label class=\"control-label col-xs-" + Integer.toString(colspan) + "\">"+ ((Label) w).getLabel() + "</label>");
+			writer.write("<div class=\"col-xs-" + Integer.toString(colspan) + "\"><p class=\"form-control-static\">"+ ((Label) w).getLabel() + "</p></div>");
 		}
 		if (w instanceof Field) {
 			final Field f = (Field) w;
 			final FieldType type = f.getType();
-			writer.write("<div class=\"col-xs-" + Integer.toString(colspan) + " " + (f.isValid() ? "has-success" : "has-error") + "\">");
+			writer.write("<div class=\"col-xs-" + Integer.toString(colspan) 
+					+ " " + (f.isValid() ? "has-success" : "has-error") + "\">");
 			if (RenderMode.INPUT.equals(mode)) {
 				if (FieldType.SELECT.equals(type)) {
 					writer.write("<select class=\"form-control\" name=\"");
