@@ -1,8 +1,5 @@
 package de.jalin.formular;
 
-import java.io.IOException;
-
-import org.apache.commons.mail.EmailException;
 
 public class FormError extends Exception {
 
@@ -17,16 +14,16 @@ public class FormError extends Exception {
 	public static final String EMAIL_MISSING_TO_ADDRESS = "EMAIL_MISSING_TO_ADDRESS";
 
 
-	public FormError(final IOException e) {
+	public FormError(final String errorMessage, final Exception e) {
+		super(errorMessage, e);
+	}
+
+	public FormError(final Exception e) {
 		super(IO_ERROR, e);
 	}
 
 	public FormError(final String errorId) {
 		super(errorId);
-	}
-
-	public FormError(final EmailException e) {
-		super(EMAIL_ERROR, e);
 	}
 
 }

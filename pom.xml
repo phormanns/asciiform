@@ -25,21 +25,6 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-email</artifactId>
-			<version>1.3.3</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.mail</groupId>
-					<artifactId>mail</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.activation</groupId>
-					<artifactId>activation</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -55,6 +40,6 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<finalName>asciiart</finalName>
+		<finalName>asciiform</finalName>
 	</build>
 </project>
