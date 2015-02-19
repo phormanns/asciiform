@@ -14,7 +14,7 @@ import de.jalin.formular.Widget;
 
 public class Html4TableRenderer implements Renderer {
 
-	public static final int DEFAULT_GRID = 12;
+	public static final int DEFAULT_GRID = 24;
 	
 	private final int grid;
 	private final String labelAlign;
@@ -104,7 +104,7 @@ public class Html4TableRenderer implements Renderer {
 						}
 						writer.write(" />");
 						if (!f.isValid()) {
-							writer.write("<span class=\"sup\" style=\"color:red;\">*</span>");
+							writer.write("&nbsp;<span class=\"sup\" style=\"color:red;\">*</span>");
 						}
 					}
 				} else {
@@ -134,7 +134,7 @@ public class Html4TableRenderer implements Renderer {
 			final String formName, final String logoURL) throws FormError {
 		if (RenderMode.PRINT.equals(mode)) {
 			try {
-				writer.write("<table border=\"0\" cellspacing=\"1\" cellpadding=\"4\" style=\"width:100%;\">"
+				writer.write("<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\" style=\"width:100%;\">"
 						+ "<tr>"
 						+ ""
 						+ "<td align=\"center\" colspan=\"1\"><img src=\"" + logoURL + "\" width=\"33%\" /></td>"
@@ -191,7 +191,7 @@ public class Html4TableRenderer implements Renderer {
 				writer.write("<form method=\"post\" class=\"form-horizontal\">\n"
 						+ "<table border=\"0\" style=\"width:100%;table-layout: fixed;\">\n");
 			} else {
-				writer.write("<table border=\"0\" cellspacing=\"4\" cellpadding=\"2\" style=\"width:100%;table-layout: fixed;\">\n");
+				writer.write("<table border=\"0\" cellspacing=\"8\" cellpadding=\"4\" style=\"width:100%;table-layout: fixed;\">\n");
 			}
 		} catch (IOException e) {
 			throw new FormError(e);

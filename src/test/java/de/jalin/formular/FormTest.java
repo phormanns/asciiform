@@ -1,6 +1,7 @@
 package de.jalin.formular;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -59,6 +60,10 @@ public class FormTest {
 			final Form form = parser.parse(new StringReader(createValidForm()), "Application", "Formular");
 			final Renderer renderer = new Html4TableRenderer();
 			renderer.render(form, new OutputStreamWriter(System.out), RenderMode.INPUT, "application title", "form name", "");
+			assertTrue(null == form.getField(0));
+			final Field field = form.getField(9);
+			assertEquals(FieldType.CHECK, field.getType());
+			assertEquals(13, field.getXC());
 		} catch (FormError e) {
 			fail(e.getLocalizedMessage());
 		} 
@@ -81,6 +86,34 @@ public class FormTest {
 		} 
 	}
 
+	@Test
+	public void testValidators() {
+		try {
+			final Parser parser = new Parser();
+			final Form form = parser.parse(new StringReader(createValidForm()), "Application", "Formular");
+			final Renderer renderer = new Html4TableRenderer();
+			renderer.render(form, new OutputStreamWriter(System.out), RenderMode.INPUT, "application title", "form name", "");
+			final Field plz = form.getField(5);
+			assertEquals(FieldType.REGEXP, plz.getType());
+			plz.setValue("D1234");
+			assertFalse(plz.isValid());
+			plz.setValue("4040");
+			assertFalse(plz.isValid());
+			plz.setValue("50550");
+			assertTrue(plz.isValid());
+			final Field ort = form.getField(6);
+			ort.setValue("");
+			assertFalse(ort.isValid());
+			ort.setValue("A");
+			assertTrue(ort.isValid());
+			ort.setValue("Ahlen (Westfalen)");
+			assertTrue(ort.isValid());
+			assertEquals(FieldType.REGEXP, ort.getType());
+		} catch (FormError e) {
+			fail(e.getLocalizedMessage());
+		} 
+	}
+
 	private String createValidForm() {
 		final StringBuffer form = new StringBuffer();
 		form.append("Anrede       [07_______________________]");
@@ -95,7 +128,7 @@ public class FormTest {
 		form.append('\n');
 		form.append("Geburtstag   [08_______________________]");
 		form.append('\n');
-		form.append("Eingabe Ok   [09]                       ");
+		form.append("             [09] Eingabe geprüft       ");
 		form.append('\n');
 		form.append("");
 		form.append('\n');
@@ -107,9 +140,9 @@ public class FormTest {
 		form.append('\n');
 		form.append("04 hausnummer: char(20)");
 		form.append('\n');
-		form.append("05 postleitzahl: regexp([0-9]{5})");
+		form.append("05 postleitzahl: regexp(\"[0-9]{5}\")");
 		form.append('\n');
-		form.append("06 ort: char(80)");
+		form.append("06 ort: regexp(\"[^\\s]{1}.*\")");
 		form.append('\n');
 		form.append("07 anrede: select(\"\",Herr,\"Frau\",\"Firma\")");
 		form.append('\n');

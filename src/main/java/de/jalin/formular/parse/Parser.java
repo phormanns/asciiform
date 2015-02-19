@@ -14,6 +14,7 @@ import de.jalin.formular.FieldType;
 import de.jalin.formular.Form;
 import de.jalin.formular.FormError;
 import de.jalin.formular.Label;
+import de.jalin.formular.Validator;
 
 public class Parser {
 
@@ -50,6 +51,12 @@ public class Parser {
 						break;
 					case ' ':
 					case '\t':
+						if (pos == 0) {
+							final Label whitespace = new Label(" ");
+							whitespace.setXC(pos);
+							whitespace.setYC(lineCount);
+							form.addLabel(lineCount, whitespace);
+						}
 						pos++;
 						break;
 					default:
@@ -103,6 +110,9 @@ public class Parser {
 				if (FieldType.SELECT.equals(fieldType)) {
 					field.addSelectValues(parseSelectValues(line));
 				}
+				if (FieldType.REGEXP.equals(fieldType)) {
+					field.setValidator(parseRexExp(line));
+				}
 				field.setType(fieldType);
 				line = buffer.readLine();
 			}
@@ -110,6 +120,29 @@ public class Parser {
 		} catch (IOException e) {
 			throw new FormError(e);
 		}
+	}
+
+	private Validator parseRexExp(final String line) {
+		final String typeString = line.substring(line.indexOf(':') + 1).trim();
+		if (typeString.startsWith(FieldType.REGEXP.type())) {
+			final int begin = typeString.indexOf('('); 
+			final int end = typeString.lastIndexOf(')');
+			final String repExpInParenthes = typeString.substring(begin+1, end).trim();
+			final String regExp;
+			if (repExpInParenthes.startsWith("\"") && repExpInParenthes.endsWith("\"")) {
+				regExp = repExpInParenthes.substring(1, repExpInParenthes.length()-1);
+			} else {
+				regExp = repExpInParenthes;
+			}
+			final Pattern pattern = Pattern.compile(regExp);
+			return new Validator() {
+				@Override
+				public boolean isValid(final String value) {
+					return pattern.matcher(value).matches();
+				}
+			};
+		}
+		return null;
 	}
 
 	private List<String> parseSelectValues(final String line) {
@@ -129,7 +162,6 @@ public class Parser {
 				}
 			}
 			return parsedValues;
-			
 		}
 		return Arrays.asList(new String[] { "none" }) ;
 	}
