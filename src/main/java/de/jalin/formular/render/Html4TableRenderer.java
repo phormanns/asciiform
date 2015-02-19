@@ -53,7 +53,7 @@ public class Html4TableRenderer implements Renderer {
 	}
 
 	private void render(final Form form, final Widget w, final int colspan, final Writer writer, final RenderMode mode) throws FormError {
-		printWidgetBegin(writer, mode, colspan);
+		printWidgetBegin(writer, w, mode, colspan);
 		try {
 			if (w instanceof Label) {
 				writer.write("<div style=\"width:100%;text-align:" + labelAlign + ";\">"+ ((Label) w).getLabel() + "</div>");
@@ -185,13 +185,13 @@ public class Html4TableRenderer implements Renderer {
 	}
 
 	@Override
-	public void printFormBegin(Writer writer, RenderMode mode) throws FormError {
+	public void printFormBegin(final Writer writer, final RenderMode mode) throws FormError {
 		try {
 			if (RenderMode.INPUT.equals(mode)) {
 				writer.write("<form method=\"post\" class=\"form-horizontal\">\n"
 						+ "<table border=\"0\" style=\"width:100%;table-layout: fixed;\">\n");
 			} else {
-				writer.write("<table border=\"0\" cellspacing=\"0\" cellpadding=\"4\" style=\"width:100%;table-layout: fixed;\">\n");
+				writer.write("<table border=\"0\" cellspacing=\"4\" cellpadding=\"2\" style=\"width:100%;table-layout: fixed;\">\n");
 			}
 		} catch (IOException e) {
 			throw new FormError(e);
@@ -199,7 +199,7 @@ public class Html4TableRenderer implements Renderer {
 	}
 
 	@Override
-	public void printFormEnd(Writer writer, RenderMode mode) throws FormError {
+	public void printFormEnd(final Writer writer, final RenderMode mode) throws FormError {
 		try {
 			writer.write("</table>\n");
 			printSubmittedMessage(writer, mode);
@@ -213,7 +213,7 @@ public class Html4TableRenderer implements Renderer {
 	}
 
 	@Override
-	public void printRowBegin(Writer writer, RenderMode mode) throws FormError {
+	public void printRowBegin(final Writer writer, final RenderMode mode) throws FormError {
 		try {
 			writer.write("<tr>\n");
 		} catch (IOException e) {
@@ -222,7 +222,7 @@ public class Html4TableRenderer implements Renderer {
 	}
 
 	@Override
-	public void printRowEnd(Writer writer, RenderMode mode) throws FormError {
+	public void printRowEnd(final Writer writer, final RenderMode mode) throws FormError {
 		try {
 			writer.write("</tr>\n");
 		} catch (IOException e) {
@@ -231,10 +231,14 @@ public class Html4TableRenderer implements Renderer {
 	}
 
 	@Override
-	public void printWidgetBegin(Writer writer, RenderMode mode, int colspan)
+	public void printWidgetBegin(final Writer writer, final Widget widget, final RenderMode mode, final int colspan)
 			throws FormError {
 		try {
-			writer.write("  <td nowrap=\"nowrap\" colspan=\"");
+			writer.write("  <td ");
+			if ( RenderMode.INPUT != mode && widget instanceof Field && ((Field) widget).getType() != FieldType.CHECK) {
+				writer.write("style=\"background-color:#e0e0e0;\" ");
+			}
+			writer.write("nowrap=\"nowrap\" colspan=\"");
 			writer.write(Integer.toString(colspan));
 			writer.write("\">");
 		} catch (IOException e) {
@@ -243,7 +247,7 @@ public class Html4TableRenderer implements Renderer {
 	}
 
 	@Override
-	public void printWidgetEnd(Writer writer, RenderMode mode) throws FormError {
+	public void printWidgetEnd(final Writer writer, final RenderMode mode) throws FormError {
 		try {
 			writer.write("</td>\n");
 		} catch (IOException e) {

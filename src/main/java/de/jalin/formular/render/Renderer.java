@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 
 import de.jalin.formular.Form;
 import de.jalin.formular.FormError;
+import de.jalin.formular.Widget;
 
 public interface Renderer {
 
@@ -32,7 +33,7 @@ public interface Renderer {
 	
 	public abstract void printRowEnd(Writer writer, RenderMode mode) throws FormError;
 	
-	public abstract void printWidgetBegin(Writer writer, RenderMode mode, int colspan) throws FormError;
+	public abstract void printWidgetBegin(Writer writer, Widget widget, RenderMode mode, int colspan) throws FormError;
 	
 	public abstract void printWidgetEnd(Writer writer, RenderMode mode) throws FormError;
 

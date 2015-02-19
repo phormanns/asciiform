@@ -1,7 +1,6 @@
 package de.jalin.formular;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Field implements Widget {
@@ -73,8 +72,8 @@ public class Field implements Widget {
 		return yc;
 	}
 
-	public void addSelectValues(final String... selectableValues) {
-		selectValues.addAll(Arrays.asList(selectableValues));
+	public void addSelectValues(final List<String> selectableValues) {
+		selectValues.addAll(selectableValues);
 	}
 
 	public String[] getSelectValues() {

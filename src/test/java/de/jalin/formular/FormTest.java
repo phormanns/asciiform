@@ -33,13 +33,16 @@ public class FormTest {
 			final Parser parser = new Parser();
 			final Form form = parser.parse(new StringReader(createValidForm()), "Application", "Formular"); 
 			final List<List<Widget>> rows = form.getRows();
-			assertEquals(6L, rows.size());
+			assertEquals(7L, rows.size());
 			final List<Widget> rowAnrede = rows.get(0);
 			assertEquals(2L, rowAnrede.size());
 			assertTrue(rowAnrede.get(0) instanceof Label);
 			assertEquals("Anrede", ((Label)rowAnrede.get(0)).getLabel());
-			assertTrue(rowAnrede.get(1) instanceof Field);
-			assertEquals("anrede", ((Field)rowAnrede.get(1)).getName());
+			final Widget anredeWidget = rowAnrede.get(1);
+			assertTrue(anredeWidget instanceof Field);
+			assertEquals("anrede", ((Field) anredeWidget).getName());
+			String[] selectValues = ((Field) anredeWidget).getSelectValues();
+			assertTrue(selectValues != null && selectValues.length == 4);
 			final List<Widget> rowGeburtstag = rows.get(5);
 			assertTrue(rowGeburtstag.get(1) instanceof Field);
 			assertEquals("geburtstag", ((Field)rowGeburtstag.get(1)).getName());
@@ -92,6 +95,8 @@ public class FormTest {
 		form.append('\n');
 		form.append("Geburtstag   [08_______________________]");
 		form.append('\n');
+		form.append("Eingabe Ok   [09]                       ");
+		form.append('\n');
 		form.append("");
 		form.append('\n');
 		form.append("01 vorname: char(80)");
@@ -106,9 +111,11 @@ public class FormTest {
 		form.append('\n');
 		form.append("06 ort: char(80)");
 		form.append('\n');
-		form.append("07 anrede: select(,Herr,Frau,Firma)");
+		form.append("07 anrede: select(\"\",Herr,\"Frau\",\"Firma\")");
 		form.append('\n');
 		form.append("08 geburtstag: date(dd.MM.yyyy)");
+		form.append('\n');
+		form.append("09 geprueft: check");
 		form.append('\n');
 		return form.toString();
 	}

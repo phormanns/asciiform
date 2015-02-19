@@ -47,7 +47,7 @@ public class Html5BootstrapRenderer implements Renderer {
 	}
 
 	private void render(final Form form, final Widget w, final int colspan, final Writer writer, final RenderMode mode) throws FormError {
-		printWidgetBegin(writer, mode, colspan);
+		printWidgetBegin(writer, w, mode, colspan);
 		try {
 			if (w instanceof Label) {
 				writer.write("<div class=\"col-xs-" + Integer.toString(colspan) + "\"><p class=\"form-control-static\">"+ ((Label) w).getLabel() + "</p></div>");
@@ -206,7 +206,7 @@ public class Html5BootstrapRenderer implements Renderer {
 	}
 
 	@Override
-	public void printWidgetBegin(Writer writer, RenderMode mode, int colspan)
+	public void printWidgetBegin(Writer writer, Widget widget, RenderMode mode, int colspan)
 			throws FormError {
 		// TODO Auto-generated method stub
 		

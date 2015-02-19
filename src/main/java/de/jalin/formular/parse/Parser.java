@@ -3,6 +3,9 @@ package de.jalin.formular.parse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,16 +112,26 @@ public class Parser {
 		}
 	}
 
-	private String[] parseSelectValues(final String line) {
+	private List<String> parseSelectValues(final String line) {
 		final String typeString = line.substring(line.indexOf(':') + 1).trim();
 		if (typeString.startsWith(FieldType.SELECT.type())) {
 			final int begin = typeString.indexOf('('); 
 			final int end = typeString.lastIndexOf(')');
 			final String params = typeString.substring(begin+1, end);
-			return params.split(",");
+			final String[] splitedValues = params.split(",");
+			final List<String> parsedValues = new ArrayList<String>();
+			for (final String val : splitedValues) {
+				final String trimmed = val.trim();
+				if (trimmed.startsWith("\"") && trimmed.endsWith("\"")) {
+					parsedValues.add(trimmed.substring(1, trimmed.length()-1));
+				} else {
+					parsedValues.add(trimmed);
+				}
+			}
+			return parsedValues;
 			
 		}
-		return new String[] { "none" } ;
+		return Arrays.asList(new String[] { "none" }) ;
 	}
 
 	private FieldType parseFieldType(final String line) {
