@@ -34,7 +34,7 @@ public class FormTest {
 			final Parser parser = new Parser();
 			final Form form = parser.parse(new StringReader(createValidForm()), "Application", "Formular"); 
 			final List<List<Widget>> rows = form.getRows();
-			assertEquals(7L, rows.size());
+			assertEquals(8L, rows.size());
 			final List<Widget> rowAnrede = rows.get(0);
 			assertEquals(2L, rowAnrede.size());
 			assertTrue(rowAnrede.get(0) instanceof Label);
@@ -61,9 +61,12 @@ public class FormTest {
 			final Renderer renderer = new Html4TableRenderer();
 			renderer.render(form, new OutputStreamWriter(System.out), RenderMode.INPUT, "application title", "form name", "");
 			assertTrue(null == form.getField(0));
-			final Field field = form.getField(9);
-			assertEquals(FieldType.CHECK, field.getType());
-			assertEquals(13, field.getXC());
+			final Field field1 = form.getField(9);
+			assertEquals(FieldType.MULTI, field1.getType());
+			assertEquals(13, field1.getXC());
+			final Field field2 = form.getField(10);
+			assertEquals(FieldType.CHECK, field2.getType());
+			assertEquals(13, field2.getXC());
 		} catch (FormError e) {
 			fail(e.getLocalizedMessage());
 		} 
@@ -128,7 +131,9 @@ public class FormTest {
 		form.append('\n');
 		form.append("Geburtstag   [08_______________________]");
 		form.append('\n');
-		form.append("             [09] Eingabe geprüft       ");
+		form.append("Bemerkung    [09_______________________]");
+		form.append('\n');
+		form.append("             [10] Eingabe geprüft       ");
 		form.append('\n');
 		form.append("");
 		form.append('\n');
@@ -148,7 +153,9 @@ public class FormTest {
 		form.append('\n');
 		form.append("08 geburtstag: date(dd.MM.yyyy)");
 		form.append('\n');
-		form.append("09 geprueft: check");
+		form.append("09 bemerkung: multi(480)");
+		form.append('\n');
+		form.append("10 geprueft: check");
 		form.append('\n');
 		return form.toString();
 	}

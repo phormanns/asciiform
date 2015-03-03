@@ -90,19 +90,31 @@ public class Html4TableRenderer implements Renderer {
 						writer.write("\"");
 						writer.write(" />");
 					} else {
-						if (f.isValid()) {
-							writer.write("<input style=\"width:100%;\" type=\"text\" name=\"");
+						if (FieldType.MULTI.equals(type)) {
+							writer.write("<textarea cols=\"50\" rows=\"5\" ");
 						} else {
-							writer.write("<input style=\"width:98%;\" type=\"text\" name=\"");
+							writer.write("<input type=\"text\" ");
+						}
+						if (f.isValid()) {
+							writer.write("style=\"width:100%;\" name=\"");
+						} else {
+							writer.write("style=\"width:98%;\" name=\"");
 						}
 						writer.write(f.getName());
-						writer.write("\" value=\"");
-						writer.write(f.getValue());
 						writer.write("\"");
 						if (RenderMode.CONFIRM.equals(mode)) {
 							writer.write(" disabled=\"disabled\"");
 						}
-						writer.write(" />");
+						if (FieldType.MULTI.equals(type)) {
+							writer.write(">");
+							writer.write(f.getValue());
+							writer.write("</textarea>");
+						} else {
+							writer.write(" value=\"");
+							writer.write(f.getValue());
+							writer.write("\"");
+							writer.write(" />");
+						}
 						if (!f.isValid()) {
 							writer.write("&nbsp;<span class=\"sup\" style=\"color:red;\">*</span>");
 						}
@@ -113,6 +125,12 @@ public class Html4TableRenderer implements Renderer {
 							writer.write("[&emsp;]");
 						} else {
 							writer.write("[X]");
+						}
+					} else if (FieldType.MULTI.equals(type)) {
+						if ("bold".equals(textStrike)) {
+							writer.write("<b><p>" + f.getValue() + "</p></b>");
+						} else {
+							writer.write("<p>" + f.getValue() + "</p>");
 						}
 					} else {
 						if ("bold".equals(textStrike)) {
@@ -137,7 +155,7 @@ public class Html4TableRenderer implements Renderer {
 				writer.write("<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\" style=\"width:100%;\">"
 						+ "<tr>"
 						+ ""
-						+ "<td align=\"center\" colspan=\"1\"><img src=\"" + logoURL + "\" width=\"33%\" /></td>"
+						+ "<td align=\"center\" colspan=\"1\"><img src=\"" + logoURL + "\" width=\"100%\" /></td>"
 						+ "<td align=\"center\" colspan=\"2\">" + title + "</td>"
 						+ "<td colspan=\"1\">Datum: " + DATE_FORMAT.format(new Date()) + "<br/>"
 								+ "Formular: <br /><b>" + formName + "</b></td>"
@@ -238,7 +256,10 @@ public class Html4TableRenderer implements Renderer {
 			if ( RenderMode.INPUT != mode && widget instanceof Field && ((Field) widget).getType() != FieldType.CHECK) {
 				writer.write("style=\"background-color:#e0e0e0;\" ");
 			}
-			writer.write("nowrap=\"nowrap\" colspan=\"");
+			if (widget instanceof Field && !FieldType.MULTI.equals(((Field) widget).getType())) {
+				writer.write("nowrap=\"nowrap\" ");
+			}
+			writer.write("colspan=\"");
 			writer.write(Integer.toString(colspan));
 			writer.write("\">");
 		} catch (IOException e) {
