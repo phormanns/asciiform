@@ -56,7 +56,12 @@ public class Html4TableRenderer implements Renderer {
 		printWidgetBegin(writer, w, mode, colspan);
 		try {
 			if (w instanceof Label) {
-				writer.write("<div style=\"width:100%;text-align:" + labelAlign + ";\">"+ ((Label) w).getLabel() + "</div>");
+				final String labelText = ((Label) w).getLabel();
+				if (labelText.startsWith("---")) {
+					writer.write("<hr />");
+				} else {
+					writer.write("<div style=\"width:100%;text-align:" + labelAlign + ";\">"+ labelText + "</div>");
+				}
 			}
 			if (w instanceof Field) {
 				final Field f = (Field) w;
@@ -209,7 +214,7 @@ public class Html4TableRenderer implements Renderer {
 				writer.write("<form method=\"post\" class=\"form-horizontal\">\n"
 						+ "<table border=\"0\" style=\"width:100%;table-layout: fixed;\">\n");
 			} else {
-				writer.write("<table border=\"0\" cellspacing=\"8\" cellpadding=\"4\" style=\"width:100%;table-layout: fixed;\">\n");
+				writer.write("<table border=\"0\" cellspacing=\"3\" cellpadding=\"2\" style=\"width:100%;table-layout: fixed;\">\n");
 			}
 		} catch (IOException e) {
 			throw new FormError(e);
