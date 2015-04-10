@@ -42,7 +42,8 @@ public class Html5BootstrapRenderer implements Renderer {
 			colsCount += colspan;
 			render(form, widget, colspan, writer, mode);
 		}
-		render(form, row.get(row.size()-1), grid - colsCount, writer, mode);
+		final Widget lastWidget = row.get(row.size()-1);
+		render(form, lastWidget, lastWidget instanceof Label ? 0 : grid - colsCount, writer, mode);
 		printRowEnd(writer, mode);
 	}
 
@@ -50,7 +51,12 @@ public class Html5BootstrapRenderer implements Renderer {
 		printWidgetBegin(writer, w, mode, colspan);
 		try {
 			if (w instanceof Label) {
-				writer.write("<div class=\"col-xs-" + Integer.toString(colspan) + "\"><p class=\"form-control-static\">"+ ((Label) w).getLabel() + "</p></div>");
+				if (colspan > 0) {
+					writer.write("<div class=\"col-xs-" + Integer.toString(colspan) + "\">");
+				} else {
+					writer.write("<div>");
+				}
+				writer.write("<p class=\"form-control-static\">"+ ((Label) w).getLabel() + "</p></div>");
 			}
 			if (w instanceof Field) {
 				final Field f = (Field) w;
@@ -149,9 +155,9 @@ public class Html5BootstrapRenderer implements Renderer {
 			throws FormError {
 		try {
 			if (RenderMode.INPUT.equals(mode)) {
-				writer.write("<div class=\"row form-group\">"
-						+ "<div class=\"col-xs-3\"><input type=\"submit\" value=\"Absenden\" class=\"btn btn-primary\"/></div>"
-						+ "<div class=\"col-xs-3\"><input type=\"reset\" value=\"Abbrechen\" class=\"btn\"/></div>"
+				writer.write("<div class=\"form-group\">"
+						+ "<div class=\"col-xs-2\"><input type=\"submit\" value=\"Absenden\" class=\"btn btn-primary\"/></div>"
+						+ "<div class=\"col-xs-2\"><input type=\"reset\" value=\"Abbrechen\" class=\"btn\"/></div>"
 						+ "</div>\n");
 			}
 		} catch (IOException e) {
@@ -163,9 +169,7 @@ public class Html5BootstrapRenderer implements Renderer {
 	public void printFormBegin(Writer writer, RenderMode mode) throws FormError {
 		try {
 			if (RenderMode.INPUT.equals(mode)) {
-				writer.write("<div class=\"container-fluid\">\n<form method=\"post\" class=\"form-horizontal\">\n");
-			} else {
-				writer.write("<div class=\"container-fluid\">\n");
+				writer.write("<form method=\"post\" class=\"form-horizontal\">\n");
 			}
 		} catch (IOException e) {
 			throw new FormError(e);
@@ -178,9 +182,7 @@ public class Html5BootstrapRenderer implements Renderer {
 		printSubmitButtons(writer, mode);
 		try {
 			if (RenderMode.INPUT.equals(mode)) {
-				writer.write("</form></div>\n");
-			} else {
-				writer.write("</div>\n");
+				writer.write("</form>\n");
 			}
 		} catch (IOException e) {
 			throw new FormError(e);
@@ -190,7 +192,7 @@ public class Html5BootstrapRenderer implements Renderer {
 	@Override
 	public void printRowBegin(Writer writer, RenderMode mode) throws FormError {
 		try {
-			writer.write("<div class=\"row has-feedback\">\n");
+			writer.write("<div class=\"form-group has-feedback\">\n");
 		} catch (IOException e) {
 			throw new FormError(e);
 		}
