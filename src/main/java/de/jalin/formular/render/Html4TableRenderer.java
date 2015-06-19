@@ -258,7 +258,7 @@ public class Html4TableRenderer implements Renderer {
 			throws FormError {
 		try {
 			writer.write("  <td ");
-			if ( RenderMode.INPUT != mode && widget instanceof Field && ((Field) widget).getType() != FieldType.CHECK) {
+			if ( RenderMode.INPUT != mode && RenderMode.PRINT_OVERLAY != mode && widget instanceof Field && ((Field) widget).getType() != FieldType.CHECK) {
 				writer.write("style=\"background-color:#e0e0e0;\" ");
 			}
 			if (widget instanceof Field && !FieldType.MULTI.equals(((Field) widget).getType())) {
