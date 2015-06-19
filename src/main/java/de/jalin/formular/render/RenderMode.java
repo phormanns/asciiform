@@ -4,6 +4,7 @@ public enum RenderMode {
 
 	INPUT,
 	CONFIRM,
-	PRINT
+	PRINT,
+	PRINT_OVERLAY
 	
 }
