@@ -66,9 +66,9 @@
 	<!-- page size -->
 	<xsl:param name="page-width">210mm</xsl:param>
 	<xsl:param name="page-height">297mm</xsl:param>
-	<xsl:param name="page-margin-top">9mm</xsl:param>
+	<xsl:param name="page-margin-top">12mm</xsl:param>
 	<xsl:param name="page-margin-bottom">9mm</xsl:param>
-	<xsl:param name="page-margin-left">10mm</xsl:param>
+	<xsl:param name="page-margin-left">19mm</xsl:param>
 	<xsl:param name="page-margin-right">10mm</xsl:param>
 
 	<!-- page header and footer -->
